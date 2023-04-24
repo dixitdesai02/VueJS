@@ -11,7 +11,6 @@
     "title": "Volkswagen Kübelwagen",
     "start_production": 1979,
     "class": "Military vehicle",
-    "price": "$82000",
     "description": "Light military vehicle designed by Ferdinand Porsche and built by Volkswagen during World War II for use by the German military."
 },
 {
@@ -35,7 +34,6 @@
     "title": "Dymaxion car",
     "start_production": 1933,
     "class": "Concept car",
-    "price": "$65000",
     "description": "It is a streamlined, futuristic vehicle with three wheels, a periscope, and an ovoid body that reminded observers of a tadpole or a flying fish"
 },
 {
@@ -59,7 +57,6 @@
     "title": "Saab 9000",
     "start_production": 1984,
     "class": "Executive car",
-    "price": "$61000",
     "description": "Although the 9000 was initially introduced as a five-door hatchback, it has evolved into a four-door notchback with a more traditional profile as well as a"
 },
 {
@@ -83,7 +80,6 @@
     "title": "Jaguar X-Type",
     "start_production": 2001,
     "class": "Compact executive car",
-    "price": "$69000",
     "description": "Considered a large family car in Europe and a compact car in the US, the X-Type was part of the compact-executive market segment and was sold in four-door saloon and five-door estate body styles."
 },
 {
@@ -99,7 +95,6 @@
     "title": "Pontiac G6",
     "start_production": 2004,
     "class": "Midsize",
-    "price": "$49000",
     "description": "A mid-size car that was produced by General Motors under the Pontiac brand. It was introduced in 2004 for the 2005 model year to replace the Grand Am."
 },
 {
