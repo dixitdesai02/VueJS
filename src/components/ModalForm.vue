@@ -1,6 +1,6 @@
 <template>
     <transition name="modal-transition">
-        <div class="fixed inset-0 bg-black bg-opacity-50 z-50" v-if="showModal">
+        <div class="fixed inset-0 bg-black bg-opacity-50 z-50" v-show="showModal">
     
           <div class="bg-white w-5/6 sm:w-2/3 md:w-1/2 lg:w-1/3 xl:w-1/4 mx-auto shadow-lg rounded-lg mt-20" @click.stop>
     
@@ -9,7 +9,7 @@
                     <Form id="form" :validation-schema="schema" @submit="showAlert">
                         <div class="flex justify-between mb-4">
                             <h3 class="text-2xl font-bold text-slate-700 pb-2"><span v-if="type === 'add'">ADD</span> <span v-else>EDIT</span> CAR</h3>
-                            <button class="text-gray-600 hover:text-gray-800 text-3xl" @click="closeModal">&times;</button>
+                            <button type="reset" class="text-gray-600 hover:text-gray-800 text-3xl" @click="closeModal">&times;</button>
                         </div>
     
                     <div class="relative z-0 w-full mb-5">
@@ -26,7 +26,7 @@
                     </div>
     
                     <div class="relative z-0 w-full mb-5">
-                        <Field v-slot="{ field, errors }" name="detail" v-model="formData.detail"> 
+                        <Field v-slot="{ field }" name="detail" v-model="formData.detail"> 
                             <textarea
                             v-bind="field"
                             name="detail"
@@ -41,14 +41,14 @@
     
                     <div class="relative z-0 w-full mb-5">
                         <Field
-                        id="url"
-                        name="url"
+                        id="image"
+                        name="image"
                         placeholder=" "
                         class="text-slate-800 pt-3 pb-2 block w-full px-0 mt-0 bg-transparent border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 focus:border-slate-600 border-gray-200"
-                        v-model="formData.url"
+                        v-model="formData.image"
                         />
-                        <label for="url" class="absolute duration-300 top-3 -z-1 origin-0 text-gray-500">Image URL</label>
-                        <ErrorMessage class="text-red-600 text-sm" name="url"/>
+                        <label for="image" class="absolute duration-300 top-3 -z-1 origin-0 text-gray-500">Image image</label>
+                        <ErrorMessage class="text-red-600 text-sm" name="image"/>
                     </div>
     
     
@@ -69,7 +69,7 @@
                     <div class="mt-4 flex justify-end">
                     <button v-if="type === 'add'" class="px-5 py-2 text-md font-bold text-center text-white bg-slate-600 rounded-lg focus:ring-4 focus:outline-none focus:ring-slate-300">Save</button>
                     <button v-else class="px-5 py-2 text-md font-bold text-center text-white bg-slate-600 rounded-lg focus:ring-4 focus:outline-none focus:ring-slate-300">Update</button>
-                    <button class="bg-gray-300 text-gray-800 font-bold py-2 px-4 ml-2 rounded" @click="closeModal">Cancel</button>
+                    <button type="reset" class="bg-gray-300 text-gray-800 font-bold py-2 px-4 ml-2 rounded" @click="closeModal">Cancel</button>
                     </div>
     
                     </Form>
@@ -86,25 +86,20 @@
 
     export default {
         name: "ModalForm",
+        props: ['showModal', 'type', 'car'],
+        emits: ['hide-modal'],
         data() {
             return {
-                formData: {
-                    name: this.carData?.title || "",
-                    detail: this.carData?.detail || "",
-                    url: this.carData?.image || "",
-                    price: this.carData?.price
-                },
+                formData: {},
                 schema: {
                     name: "required|min:3|max:50",
                     detail: "required|min:30|max:120",
-                    url: "required|url",
+                    image: "required|url",
                     price: "required|numeric|min_value:100|max_value:10000000"
                 },
                 alertTitle: this.type === 'edit' ? "Updated" : "Created"
             };
         },
-        props: ['showModal', 'type', 'carData'],
-        emits: ['hide-modal'],
         methods: {
             closeModal() {
                 this.$emit('hide-modal');
@@ -116,15 +111,20 @@
                     title: `Car ${this.alertTitle}!`,
                     html: `
                         <br/>
-                        <img src="${this.formData.url}" alt="Car Image" width="225" height="225" style="margin: auto" />
+                        <img src="${this.formData.image}" alt="Car Image" width="225" height="225" style="margin: auto" />
                         <br/>
                         <strong>Name:</strong> ${this.formData.name} <br/>
-                        <strong>Detail:</strong> ${this.formData.detail} <br/>
+                        <strong>Details:</strong> ${this.formData.detail} <br/>
                         <strong>Price:</strong> $${this.formData.price} <br/>
                     `, 
                     confirmButtonText: "Done!",
                     confirmButtonColor: "#475569",
                 })  
+            }
+        },
+        watch: {
+            car(newValue) {
+                this.formData = {...newValue}
             }
         }
     }

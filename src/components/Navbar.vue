@@ -6,15 +6,12 @@
                 <h3 class="text-md mt-1 text-sky-300 font-semibold">-Retro Reimagined</h3>
             </div>
             <div>
-                <button @click="() => { showModal = true }" class="px-4 py-2 text-lg font-semibold text-center text-slate-700 hover:bg-slate-200 bg-slate-100 rounded-lg focus:ring-4 focus:outline-none focus:ring-slate-400">
+                <button @click="showModalForm" class="px-4 py-2 text-lg font-semibold text-center text-slate-700 hover:bg-slate-200 bg-slate-100 rounded-lg focus:ring-4 focus:outline-none focus:ring-slate-400">
                     ADD CAR
                 </button>
             </div>
         </div>
     </header>
-
-    <ModalForm v-show="showModal" :type="'add'" :showModal="showModal" @hide-modal="() => { showModal = false }"/>
-
 </template>
 
 <script>
@@ -23,11 +20,11 @@ import ModalForm from './ModalForm.vue';
 
 export default {
     name: "Header",
-    data() {
-        return {
-            showModal: false
+    methods: {
+        showModalForm() {
+            this.$emit('show-form', {})
         }
-    }, 
+    },
     components: {
         ModalForm
     }

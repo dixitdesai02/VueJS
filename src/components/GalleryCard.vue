@@ -4,11 +4,7 @@
             <img class="car-img rounded-t-lg" :src="car.image" alt="" />
         </a>
         <div class="p-5">
-            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ car.title.slice(0, 15) }}</h5>
-            <!-- <div class="mb-2 text-xs font-medium flex justify-between">
-                <span class="p-1 px-3 bg-slate-200 rounded-full">{{ car.class }}</span>
-                <span class="p-1 px-3 bg-slate-200 rounded-full">{{ car.start_production }}</span>
-            </div> -->
+            <h5 class="mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">{{ car.name.slice(0, 15) }}</h5>
             <p class="mb-3 font-light text-gray-700 dark:text-gray-400 h-24">
                 {{ car.detail?.length > 110 ? car.detail.slice(0, 100) + "...": car.detail }}
             </p>
@@ -25,9 +21,7 @@
             </div>
         </div>
     </div>
-
-    <ModalForm v-show="showModal" :carData="car" :type="'edit'" :showModal="showModal" @hide-modal="() => { showModal = false }"/>
-
+    
 </template>
 
 <script>
@@ -36,26 +30,21 @@
 
     export default {
         name: "GalleryCard",
-        data() {
-            return {
-                showModal: false
-            }
-        },
         props: ["car"],
-        emits: ["showPrice"],
+        emits: ["show-price", "show-form"],
         methods: {
             showPrice() {
-                this.$emit('showPrice', this.car.title, this.car.price);
+                this.$emit('show-price', this.car.name, this.car.price);
             },
             showDeleteAlert() {
                 Swal.fire(
                 'Deleted!',
-                `${this.car.title} has been deleted.`,
+                `${this.car.name} has been deleted.`,
                 'success'
                 )
             },
             showEditForm() {
-                this.showModal = true;
+                this.$emit('show-form', {...this.car})
             }
         },
         components: {
