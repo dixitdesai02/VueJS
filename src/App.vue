@@ -6,9 +6,9 @@
 </template>
 
 <script>
-    import cars from '../cars.json';
+    import cars from '../cars-updated.json';
     import GalleryCard from "./components/GalleryCard.vue"
-    import swal from 'sweetalert';
+    import Swal from 'sweetalert2';
 
     export default {
         name: "App",
@@ -19,12 +19,11 @@
         },
         methods: {
             showPrice(title, price) {
-                swal({
+                Swal.fire({
                     title: title,
-                    text: `Price: ${price}`, 
-                    buttons: {
-                        confirm : {text:'Okay',className:'sweet-ok'},
-                    }
+                    html: `Price:<strong> $${price} /-</strong>`, 
+                    confirmButtonText: "Okay!",
+                    confirmButtonColor: "#475569"
                 })
             }
         },
