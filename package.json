@@ -8,7 +8,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "sweetalert": "^2.1.2",
+    "@vee-validate/rules": "^4.8.6",
+    "sweetalert2": "^11.7.3",
+    "tw-elements": "^1.0.0-beta2",
+    "vee-validate": "^4.8.6",
     "vue": "^3.2.47"
   },
   "devDependencies": {
