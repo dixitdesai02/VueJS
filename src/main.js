@@ -4,9 +4,11 @@ import './index.css'
 
 import Navbar from "./components/Navbar.vue";
 import validation from './includes/validation';
+import router from './router/index';
 
 const app = createApp(App);
 
+app.use(router)
 app.use(validation)
 
 app.component("Navbar", Navbar)

@@ -13,7 +13,8 @@
     "sweetalert2": "^11.7.3",
     "tw-elements": "^1.0.0-beta2",
     "vee-validate": "^4.8.6",
-    "vue": "^3.2.47"
+    "vue": "^3.2.47",
+    "vue-router": "^4.1.6"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.0.0",
