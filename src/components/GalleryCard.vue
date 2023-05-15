@@ -88,13 +88,6 @@
         transition: all 0.3s ease-in-out;
     }
 
-    .wrapper {
-        transition: scale ease-in-out 200ms;
-    }
-    .wrapper:hover{
-        scale: 1.02;
-    }
-
     .wrapper:hover .car-img {
         scale: 1.1;
     }
