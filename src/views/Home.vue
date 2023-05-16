@@ -5,8 +5,8 @@
                         ADD CAR
                 </button>
             </div>
-            <section class="pt-3 pb-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 place-items-center">
-                <transition-group name="fade">
+            <section class="pt-3 pb-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 place-items-center relative">
+                <transition-group name="fade" mode="out-in">
                     <GalleryCard @show-price="showPrice" :style="{transitionDelay: `${index*0.2}s`}" @update-cars="fetchData" @show-form="showModalForm" v-for="(car, index) in carsData" :car="car" :key="car.id"/>
                 </transition-group>
                 <ModalForm :showModal="showModal" @hide-modal="() => { showModal = false }" @update-cars="fetchData" :type="!Object.keys(editCar).length ? 'add' : 'edit'" :car="editCar" />
@@ -84,5 +84,14 @@
     .fade-enter-to {
         opacity: 1;
         transform: scale(1);
+    }
+
+    .fade-leave-active {
+        transition: all 0.3s ease;
+    }
+
+    .fade-leave-to {
+        opacity: 0;
+        transform: translateY(-5rem);
     }
 </style>
