@@ -15,8 +15,8 @@
                 </button>
 
                 <div class="icon-wrapper flex justify-between w-[4em] gap-2">
-                    <img @click="showEditForm" src="../assets/edit.svg" alt="Edit" class="w-5 h-6 object-contain cursor-pointer opacity-90"/>
-                    <img @click="handleDelete" src="../assets/delete.svg" alt="delete" class="w-6 h-6 cursor-pointer object-contain opacity-80">
+                    <img @click="showEditForm" src="/edit.svg" alt="Edit" class="w-5 h-6 object-contain cursor-pointer opacity-90"/>
+                    <img @click="handleDelete" src="/delete.svg" alt="delete" class="w-6 h-6 cursor-pointer object-contain opacity-80">
                 </div>
             </div>
         </div>
@@ -86,13 +86,6 @@
         height: 220px;
         object-fit: cover;
         transition: all 0.3s ease-in-out;
-    }
-
-    .wrapper {
-        transition: scale ease-in-out 200ms;
-    }
-    .wrapper:hover{
-        scale: 1.02;
     }
 
     .wrapper:hover .car-img {

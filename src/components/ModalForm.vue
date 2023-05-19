@@ -1,6 +1,8 @@
 <template>
-    <transition name="modal-transition">
-        <div class="fixed inset-0 bg-black bg-opacity-50 z-50" v-if="showModal">
+    <transition name="modal-transition" :duration="{ enter: 400, leave: 100 }" mode="out-in"> 
+    <div class="fixed inset-0 z-40 bg-black bg-opacity-50" v-if="showModal">
+
+        <div class="inner z-50">   
     
           <div class="bg-white w-5/6 sm:w-2/3 md:w-1/2 lg:w-1/3 xl:w-1/4 mx-auto shadow-lg rounded-lg mt-20" @click.stop>
     
@@ -77,7 +79,8 @@
                 </div>
           </div>
         </div>
-      </transition>
+    </div>
+</transition>
 </template>
 
 
@@ -171,14 +174,39 @@
 
 <style scoped>
 
-.modal-transition-enter-active,
-.modal-transition-leave-active {
-transition: opacity 0.3s ease;
+.modal-transition-enter-active .inner{
+    animation: bounce-in 0.4s ease-in-out;
 }
 
-.modal-transition-enter,
+.modal-transition-leave-active {
+    transition: all 0.1s ease-in-out;
+}
+
+.modal-transition-leave-from {
+    opacity: 1;
+}
+
 .modal-transition-leave-to {
-opacity: 0;
+    opacity: 0;
+}
+
+@keyframes bounce-in {
+    0% {
+        transform: scale(0.6);
+    }
+
+    50% {
+        transform: scale(1.06);
+    }
+
+    90% {
+        transform: scale(0.96);
+    }
+
+    100% {
+        transform: scale(1);
+    }
 }
 
 </style>
+
