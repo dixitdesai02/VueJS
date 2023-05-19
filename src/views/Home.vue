@@ -1,15 +1,15 @@
 <template>
-        <main v-show="!isLoading" class="w-5/6 max-w-screen-xl mx-auto">
+        <main v-if="!isLoading" class="w-5/6 max-w-screen-xl mx-auto">
             <div class="button-wrapper flex flex-row justify-center sm:justify-end">
-                <button @click="showModalForm({})" class="mt-3 px-5 py-2 text-md font-semibold text-center text-slate-700 hover:bg-slate-300 bg-slate-200 rounded-lg focus:ring-4 focus:outline-none focus:ring-slate-400">
+                <button @click="showAddForm" class="mt-3 px-5 py-2 text-md font-semibold text-center text-slate-700 hover:bg-slate-300 bg-slate-200 rounded-lg focus:ring-4 focus:outline-none focus:ring-slate-400">
                         ADD CAR
                 </button>
             </div>
             <section class="pt-3 pb-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 place-items-center relative">
-                <transition-group name="fade" mode="out-in">
-                    <GalleryCard @show-price="showPrice" :style="{transitionDelay: `${index*0.2}s`}" @update-cars="fetchData" @show-form="showModalForm" v-for="(car, index) in carsData" :car="car" :key="car.id"/>
+                <transition-group name="fade" mode="out-in" appear>
+                    <GalleryCard @show-price="showPrice" :style="{transitionDelay: `${index*0.2}s`}" v-for="(car, index) in cars" :car="car" :key="car.id"/>
                 </transition-group>
-                <ModalForm :showModal="showModal" @hide-modal="() => { showModal = false }" @update-cars="fetchData" :type="!Object.keys(editCar).length ? 'add' : 'edit'" :car="editCar" />
+                <ModalForm />
             </section>
         </main>
         <Loader v-show="isLoading"/>
@@ -20,22 +20,27 @@
     import ModalForm from '../components/ModalForm.vue';
     import Loader from "../components/Loader.vue";
     import Swal from 'sweetalert2';
-    import axios from 'axios';
+    import { mapActions, mapState, mapWritableState } from "pinia";
+    import { useCarData } from "../stores/carData";
+    import { useModalStore } from "../stores/modalStore";
 
     export default {
         name: 'Home',
         data() {
             return {
-                carsData: null,
-                editCar: {},
                 isLoading: true,
-                showModal: false
             }
         },
-        mounted() {
+        async created() {
             this.fetchData();
         },
+        computed: {
+            ...mapWritableState(useModalStore, ['showModal', 'typeOfModal', 'editData']),
+            ...mapState(useCarData, ['cars'])
+        },
         methods: {
+            ...mapActions(useCarData, ['fetchCars']),
+
             showPrice(title, price) {
                 Swal.fire({
                     title: title,
@@ -44,23 +49,15 @@
                     confirmButtonColor: "#475569"
                 })
             },
-            showModalForm(car) {
+            showAddForm() {
                 this.showModal = true;
-                this.editCar = car;
+                this.typeOfModal = 'add';
+                this.editData = {}
             },
-            fetchData() {
+            async fetchData() {
                 this.isLoading = true;
-
-                axios.get("https://testapi.io/api/dartya/resource/cardata")
-                .then(response => { 
-                    this.carsData = response.data.data;
-                    this.isLoading = false;
-                })
-                .catch((err) => { 
-                    alert("ERROR while Fetching Data!", err);
-                    this.isLoading = false;
-                })
-
+                await this.fetchCars();
+                this.isLoading = false;
             }
         },
         components: {

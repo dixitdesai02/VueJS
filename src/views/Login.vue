@@ -11,9 +11,3 @@
         components: { LoginForm }
 }
 </script>
-
-<style scoped>
-    section {
-        height: 75vh;
-    }
-</style>

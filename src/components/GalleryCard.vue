@@ -4,8 +4,8 @@
             <img class="car-img rounded-t-lg bg-slate-50" :src="car.image" alt="" />
         </div>
         <div class="p-5">
-            <h5 class="mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">{{ car.name?.slice(0, 15) }}</h5>
-            <p class="mb-3 font-light text-gray-700 dark:text-gray-400 h-24 car-details">
+            <h5 class="mb-2 text-xl font-semibold tracking-tight text-gray-900 dark:text-white">{{ car.name?.length > 20 ? car.name?.slice(0, 20) + "..." : car.name }}</h5>
+            <p class="mb-3 font-light text-gray-700 dark:text-gray-400 h-24 car-details"> 
                 {{ car.details?.length > 110 ? car.details?.slice(0, 100) + "...": car.details }}
             </p>
             <div class="flex items-center justify-between">
@@ -21,19 +21,24 @@
             </div>
         </div>
     </div>
-    
 </template>
 
 <script>
     import ModalForm from './ModalForm.vue';
     import Swal from 'sweetalert2'
-    import axios from 'axios';
+    import { mapActions, mapWritableState } from 'pinia';
+    import { useCarData } from '../stores/carData';
+    import { useModalStore } from '../stores/modalStore';
 
     export default {
         name: "GalleryCard",
         props: ["car"],
-        emits: ["show-form", "update-cars"],
+        computed: {
+            ...mapWritableState(useModalStore, ['showModal', 'typeOfModal', 'editData'])
+        },
         methods: {
+            ...mapActions(useCarData, ['deleteCar']),
+
             showDetails() {
                 this.$router.push(`/details/${this.car.id}`);
             },
@@ -46,28 +51,27 @@
                     confirmButtonColor: '#3085d6',
                     cancelButtonColor: '#d33',
                     confirmButtonText: 'Yes, delete it!'
-                    }).then((result) => {
+                    }).then(async (result) => {
                     if (result.isConfirmed) {
-                        axios.delete(`https://testapi.io/api/dartya/resource/cardata/${this.car.id}`)
-                        .then(response => {
-                            if (response.status === 204) {
-                                Swal.fire(
+                        try {
+                            await this.deleteCar(this.car.id);
+
+                            Swal.fire(
                                 'Deleted!',
                                 `${this.car.name} has been Deleted`,
                                 'success'
-                                )
-                                this.$emit('update-cars');
-                            }
-                            else {
-                                alert("Error! Car Could not be Deleted!!")
-                            }
-                        })
-                        .catch(err => { alert("Error! Car Could not be Deleted!!") })   
+                            )
+                        }
+                        catch (error) {
+                            alert("Error! ", error);
+                        }
                     }
                 })   
             },
             showEditForm() {
-                this.$emit('show-form', {...this.car})
+                this.showModal = true;
+                this.typeOfModal = 'edit',
+                this.editData = { ...this.car }
             }
         },
         components: {

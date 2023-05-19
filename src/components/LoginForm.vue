@@ -1,5 +1,5 @@
 <template>
-    <div class="login-wrapper w-5/6 sm:w-2/3 md:w-1/2 lg:w-1/3 xl:w-1/4 m-auto flex flex-col justify-center h-3/5">
+    <div class="login-wrapper w-5/6 sm:w-2/3 md:w-1/2 lg:w-1/3 xl:w-1/4 m-auto flex flex-col justify-center h-3/5 mt-10 mb-10">
 
         <div class="bg-white shadow-lg rounded-lg">
             <h2 class="font-bold text-3xl bg-slate-200 text-slate-700 text-center py-4 rounded-t-md">LOGIN</h2>
