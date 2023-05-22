@@ -4,28 +4,14 @@ import { defineStore } from "pinia";
 export const useCarData = defineStore('carData', {
     state: () => {
         return {
-            cars: [],
-            carIdForDetails: undefined
+            cars: []
         }
     },
 
     getters: {
-        // getCars() {
-        //     return this.cars;
-        // },
-        
-        async carDetailsById() {
-            try {
-
-                const response = await axios.get(`https://testapi.io/api/dartya/resource/cardata/${this.carIdForDetails}`);
-                return response.data;
-            }
-            catch (error) {
-                alert("Error! Could not fetch this car Details!", error)
-                return null;
-            }
-        }
-        
+        carDetailsById: (state) => (id) => {
+            return state.cars.find((car) => car.id == id)
+        } 
     },
 
     actions: {

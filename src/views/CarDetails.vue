@@ -21,7 +21,7 @@
 
 <script>
     import Loader from '../components/Loader.vue';
-    import { mapState, mapWritableState } from 'pinia';
+    import { mapActions, mapState, mapWritableState } from 'pinia';
     import { useCarData } from '../stores/carData';
 
     export default {
@@ -33,17 +33,17 @@
             }
         },
         computed: {
-            ...mapState(useCarData, ['carDetailsById']),
-            ...mapWritableState(useCarData, ['carIdForDetails'])           
+            ...mapState(useCarData, ['carDetailsById'])     
         },
         methods: {
+            ...mapActions(useCarData, ['fetchCars']),
             goBack() {
                 this.$router.go(-1);
             }
         },
         async created() {
-            this.carIdForDetails = this.$route.params.id;
-            this.carDetails = await this.carDetailsById;
+            await this.fetchCars();
+            this.carDetails = this.carDetailsById(this.$route.params.id);
             this.isLoading = false;
         },
         components: {
