@@ -4,7 +4,8 @@ import { defineStore } from "pinia";
 export const useCarData = defineStore('carData', {
     state: () => {
         return {
-            cars: []
+            cars: [],
+            baseURL: "https://testapi.io/api/dartya/resource/cardata"
         }
     },
 
@@ -17,7 +18,7 @@ export const useCarData = defineStore('carData', {
     actions: {
         async fetchCars() {
             try {
-                const response = await axios.get("https://testapi.io/api/dartya/resource/cardata");
+                const response = await axios.get(`${this.baseURL}`);
                 this.cars = response.data.data;
             }
             catch(error) {
@@ -27,7 +28,7 @@ export const useCarData = defineStore('carData', {
 
         async addCar(carData) {
             try {
-                await axios.post("https://testapi.io/api/dartya/resource/cardata", carData);
+                await axios.post(`${this.baseURL}`, carData);
                 await this.fetchCars();
             }
             catch (error) {
@@ -37,7 +38,7 @@ export const useCarData = defineStore('carData', {
 
         async editCar(id, carData) {
             try {
-                await axios.put(`https://testapi.io/api/dartya/resource/cardata/${id}`, carData);
+                await axios.put(`${this.baseURL}/${id}`, carData);
                 await this.fetchCars();
             }
             catch(error) {
@@ -47,11 +48,11 @@ export const useCarData = defineStore('carData', {
 
         async deleteCar(id) {
             try {
-                await axios.delete(`https://testapi.io/api/dartya/resource/cardata/${id}`);
+                await axios.delete(`${this.baseURL}/${id}`);
                 await this.fetchCars();
             }
             catch(error) {
-                alert("Error! Car could not be Deleted!");
+                throw new Error('Error! Car could not be Deleted!'); 
             }
         }
     }

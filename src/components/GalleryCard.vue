@@ -63,10 +63,10 @@
                             )
                         }
                         catch (error) {
-                            alert("Error! ", error);
+                            alert(error);
                         }
                     }
-                })   
+                })
             },
             showEditForm() {
                 this.showModal = true;

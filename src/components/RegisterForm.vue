@@ -138,8 +138,8 @@
 </template>
 
 <script>
-import axios from 'axios';
-
+    import { mapActions } from 'pinia';
+    import {useAuthStore} from '../stores/auth';
     
     export default {
         name: "RegisterForm",
@@ -170,21 +170,16 @@ import axios from 'axios';
             }
         },
         methods: {
+            ...mapActions(useAuthStore, ['register']),
             handleRegister() {
                 this.inputData.age = this.getAge;
-
-                axios.post("https://testapi.io/api/dartya/resource/users", this.inputData)
-                .then((response) => {
-                    if (response.status === 201) {
-                        this.$router.push('/')
-                    }
-                    else {
-                        alert("Register Unsuccessful!! Please Try Again.")
-                    }
-                })
-                .catch((err) => {   
-                    alert("Error! ", err)
-                })
+                try {
+                    this.register(this.inputData);
+                    this.$router.push("/login");
+                }
+                catch (error) {
+                    alert("Error! " + error);
+                }
             }
         }
     }

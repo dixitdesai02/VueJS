@@ -1,18 +1,18 @@
 <template>
-        <main v-if="!isLoading" class="w-5/6 max-w-screen-xl mx-auto">
-            <div class="button-wrapper flex flex-row justify-center sm:justify-end">
-                <button @click="showAddForm" class="mt-3 px-5 py-2 text-md font-semibold text-center text-slate-700 hover:bg-slate-300 bg-slate-200 rounded-lg focus:ring-4 focus:outline-none focus:ring-slate-400">
-                        ADD CAR
-                </button>
-            </div>
-            <section class="pt-3 pb-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 place-items-center relative">
-                <transition-group name="fade" mode="out-in" appear>
-                    <GalleryCard @show-price="showPrice" :style="{transitionDelay: `${index*0.2}s`}" v-for="(car, index) in cars" :car="car" :key="car.id"/>
-                </transition-group>
-                <ModalForm />
-            </section>
-        </main>
-        <Loader v-show="isLoading"/>
+    <main v-if="!isLoading" class="w-5/6 max-w-screen-xl mx-auto">
+        <div class="button-wrapper flex flex-row justify-center sm:justify-end">
+            <button @click="showAddForm" class="mt-3 px-5 py-2 text-md font-semibold text-center text-slate-700 hover:bg-slate-300 bg-slate-200 rounded-lg focus:ring-4 focus:outline-none focus:ring-slate-400">
+                    ADD CAR
+            </button>
+        </div>
+        <section class="pt-3 pb-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 place-items-center relative">
+            <transition-group name="fade" mode="out-in" appear>
+                <GalleryCard @show-price="showPrice" :style="{transitionDelay: `${index*0.15}s`}" v-for="(car, index) in cars" :car="car" :key="car.id"/>
+            </transition-group>
+            <ModalForm />
+        </section>
+    </main>
+    <Loader v-show="isLoading"/>
 </template>
 
 <script>
@@ -70,17 +70,12 @@
 
 <style scoped>
     .fade-enter-active {
-        transition: all 0.3s ease;
+        transition: all 0.2s ease-in-out;
     }
 
     .fade-enter-from {
         opacity: 0;
         transform: scale(0.8);
-    }
-
-    .fade-enter-to {
-        opacity: 1;
-        transform: scale(1);
     }
 
     .fade-leave-active {

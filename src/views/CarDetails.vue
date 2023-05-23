@@ -21,7 +21,7 @@
 
 <script>
     import Loader from '../components/Loader.vue';
-    import { mapActions, mapState, mapWritableState } from 'pinia';
+    import { mapActions, mapState } from 'pinia';
     import { useCarData } from '../stores/carData';
 
     export default {

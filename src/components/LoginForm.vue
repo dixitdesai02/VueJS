@@ -36,7 +36,10 @@
 </template>
 
 <script>
-import axios from 'axios';
+import { mapActions } from 'pinia';
+import { useAuthStore } from '../stores/auth';
+
+// import axios from 'axios';
 
     export default {
         name: "LoginForm",
@@ -53,19 +56,15 @@ import axios from 'axios';
             }
         },
         methods: {
+            ...mapActions(useAuthStore, ['login']),
             handleLogin() {
-                axios.post("https://testapi.io/api/dartya//login", this.inputData)
-                .then((response) => {
-                    if (response.status === 200) {
-                        this.$router.push("/");
-                    }
-                    else {
-                        alert("Invalid Credentials");
-                    }
-                })
-                .catch(err => {
-                    alert("Error While Logging In! Please Try Again")
-                })
+                try {
+                    this.login(this.inputData);
+                    this.$router.push("/")
+                }
+                catch(error) {
+                    alert("Error! " + error);
+                }
             }
         }
     }
