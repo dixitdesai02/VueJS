@@ -7,12 +7,12 @@
             <transition name="fade">
                 <div v-show="!isLoading" class="wrapper flex flex-col md:flex-row m-auto items-center bg-white p-5 rounded shadow-lg mt-10">
                     <div class="img-wrapper">
-                        <img :src="carData.image" alt="Car Image" class="car-image">
+                        <img :src="carDetails?.image" alt="Car Image" class="car-image">
                     </div>
                     <div class="details-wrapper p-5">
-                        <h1 class="text-3xl font-bold text-slate-800">{{ carData.name }}</h1>
-                        <h3 class="text-lg text-slate-600 pt-5 break-words">{{ carData.details }}</h3>
-                        <h3 class="text-lg text-slate-800 font-semibold pt-5">$ {{ carData.price }}</h3>
+                        <h1 class="text-3xl font-bold text-slate-800">{{ carDetails?.name }}</h1>
+                        <h3 class="text-lg text-slate-600 pt-5 break-words">{{ carDetails?.details }}</h3>
+                        <h3 class="text-lg text-slate-800 font-semibold pt-5">$ {{ carDetails?.price }}</h3>
                     </div>
                 </div>
             </transition>
@@ -20,31 +20,31 @@
 </template>
 
 <script>
-import axios from 'axios';
-import Loader from '../components/Loader.vue';
+    import Loader from '../components/Loader.vue';
+    import { mapActions, mapState } from 'pinia';
+    import { useCarData } from '../stores/carData';
+
     export default {
         name: "CarDetails",
         data() {
             return {
-                carData: "",
-                isLoading: true
+                isLoading: true,
+                carDetails: {}
             }
         },
+        computed: {
+            ...mapState(useCarData, ['carDetailsById'])     
+        },
         methods: {
+            ...mapActions(useCarData, ['fetchCars']),
             goBack() {
                 this.$router.go(-1);
             }
         },
-        mounted() {
-            axios.get(`https://testapi.io/api/dartya/resource/cardata/${this.$route.params.id}`)
-            .then((response) => {
-                this.carData = response.data;
-                this.isLoading = false;
-            })
-            .catch(err => {
-                alert("ERROR:", err)
-                this.isLoading = false;
-            })
+        async created() {
+            await this.fetchCars();
+            this.carDetails = this.carDetailsById(this.$route.params.id);
+            this.isLoading = false;
         },
         components: {
             Loader

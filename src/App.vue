@@ -19,16 +19,16 @@
 
 <style scoped>
     .route-enter-from {
-        transform: translateY(6rem) scale(0.8);
-        opacity: 0.5;
+        opacity: 0;
+        transform: scale(0.8);
     }
 
     .route-enter-to {
-        transform: translateY(0) scale(1);
         opacity: 1;
+        transform: scale(1);
     }
 
     .route-enter-active {
-        transition: all 0.3s linear;
+        transition: all 0.4s ease-in-out;
     }
 </style>

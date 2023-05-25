@@ -1,10 +1,10 @@
 <template>
     <header class="bg-slate-600 text-center pt-4 pb-3 sticky top-0 w-full z-40">
         <div class="w-5/6 sm:w-2/3 flex justify-between items-center m-auto">
-            <div>
+            <a class="cursor-pointer" href="/">
                 <h1 class="text-2xl sm:text-3xl text-slate-200 font-bold">Car Zone</h1>
                 <h3 class="text-md mt-1 text-sky-300 font-semibold">-Driving Dreams</h3>
-            </div>
+            </a>
             <div class="nav-list bg-slate-600" ref="navList">
                 <div class="hamburger-menu" ref="menu" @click="showMenu">
                     <div class="line line-1"></div>

@@ -10,7 +10,7 @@
                 <div class="mx-auto max-w-md bg-white border-0 sm:rounded-3xl">
                     <Form id="form" :validation-schema="schema" @submit="handleSubmit">
                         <div class="flex justify-between mb-4">
-                            <h3 class="text-2xl font-bold text-slate-700 pb-2"><span v-if="type === 'add'">ADD</span> <span v-else>EDIT</span> CAR</h3>
+                            <h3 class="text-2xl font-bold text-slate-700 pb-2"><span v-if="typeOfModal === 'add'">ADD</span> <span v-else>EDIT</span> CAR</h3>
                             <button type="reset" class="text-gray-600 hover:text-gray-800 text-3xl" @click="closeModal">&times;</button>
                         </div>
     
@@ -69,7 +69,7 @@
                     </div>
     
                     <div class="mt-4 flex justify-end">
-                        <button v-if="type === 'add'" class="px-5 py-2 text-md font-bold text-center text-white bg-slate-600 rounded-lg focus:ring-4 focus:outline-none focus:ring-slate-300">Save</button>
+                        <button v-if="typeOfModal === 'add'" class="px-5 py-2 text-md font-bold text-center text-white bg-slate-600 rounded-lg focus:ring-4 focus:outline-none focus:ring-slate-300">Save</button>
                         <button v-else class="px-5 py-2 text-md font-bold text-center text-white bg-slate-600 rounded-lg focus:ring-4 focus:outline-none focus:ring-slate-300">Update</button>
                         <button type="reset" class="bg-gray-300 text-gray-800 font-bold py-2 px-4 ml-2 rounded" @click="closeModal">Cancel</button>
                     </div>
@@ -85,13 +85,13 @@
 
 
 <script>
-    import axios from 'axios';
+    import { mapActions, mapState, mapWritableState } from 'pinia';
     import Swal from 'sweetalert2';
+    import { useCarData } from '../stores/carData';
+    import { useModalStore } from '../stores/modalStore';
 
     export default {
         name: "ModalForm",
-        props: ['showModal', 'type', 'car'],
-        emits: ['hide-modal', 'update-cars'],
         data() {
             return {
                 formData: {},
@@ -100,44 +100,43 @@
                     details: "required|min:30|max:120",
                     image: "required|url",
                     price: "required|numeric|min_value:100|max_value:10000000"
-                },
-                alertTitle: null,
+                }
             };
         },
+        computed: {
+            ...mapState(useModalStore, ['typeOfModal', 'editData']),
+            ...mapWritableState(useModalStore, ['showModal'])
+        },
         methods: {
-            closeModal() {
-                this.$emit('hide-modal');
-            },
-            handleSubmit() {
-                if (this.type === 'add') {
-                    axios
-                    .post("https://testapi.io/api/dartya/resource/cardata", this.formData)
-                    .then(response => { 
-                        if (response.status === 201) {
-                            this.notify();
+            ...mapActions(useCarData, ['addCar', 'editCar']),
 
-                            this.$emit('update-cars');
-                            this.closeModal();
-                        }
-                    })
-                    .catch(err => { alert(err) });
+            closeModal() {
+                this.showModal = false;
+            },
+            async handleSubmit() {
+                if (this.typeOfModal === 'add') {
+                    try {
+                        await this.addCar(this.formData);
+                        this.notify();
+                    }
+                    catch(error) {
+                        alert("Error! ", error)
+                    }
                 }
                 else {
-                    axios.put(`https://testapi.io/api/dartya/resource/cardata/${this.car.id}`, this.formData)
-                    .then(response => {
-                        if (response.status === 200) {
-                            this.notify();
-                            
-                            this.$emit('update-cars');
-                            this.closeModal();
-                        }
-                    })
-                    .catch(err => { alert(err) });
+                    try {
+                        await this.editCar(this.formData.id, this.formData);
+                        this.notify();
+                    }
+                    catch(error) {
+                        alert("Error! ", error)
+                    }
                 }
+                this.closeModal();
             },
             notify() {
                 Swal.fire({
-                    title: `Car ${this.alertTitle}!`,
+                    title: `Car ${this.typeOfModal === 'add' ? 'Created': 'Updated'}!`,
                     html: `
                         <br/>
                         <img src="${this.formData.image}" alt="Car Image" width="225" height="225" style="margin: auto" />
@@ -152,18 +151,9 @@
             }
         },
         watch: {
-            car: {
+            editData: {
                 handler(newValue) {
                     this.formData = {...newValue}
-                },
-                immediate: true
-            },
-            type: {
-                handler(newValue) {
-                    if (newValue === 'add')
-                        this.alertTitle = 'Created';
-                    else
-                        this.alertTitle = 'Updated';
                 },
                 immediate: true
             }
