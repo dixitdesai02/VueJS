@@ -131,7 +131,8 @@
                     <ErrorMessage class="text-red-600 text-sm" name="age"/>
                 </div>
 
-                <button type="submit" class="my-1 px-5 py-2 text-md font-bold text-center text-white bg-slate-600 rounded-lg focus:ring-4 focus:outline-none focus:ring-slate-300">Register</button>
+                <button type="submit" v-show="!showLoading" class="my-1 px-5 py-2 text-md font-bold text-center text-white bg-slate-600 rounded-lg focus:ring-4 focus:outline-none focus:ring-slate-300">Register</button>
+                <img v-show="showLoading" class="bg-slate-600 rounded-lg px-3 w-16 h-11 object-contain" src="/spinner.gif" alt="Spinner" />
             </Form>
         </div>
     </div>
@@ -161,7 +162,8 @@
                     role: "",
                     gender: "",
                     dob: ""
-                }
+                },
+                showLoading: false
             }
         },
         computed: {
@@ -171,15 +173,20 @@
         },
         methods: {
             ...mapActions(useAuthStore, ['register']),
-            handleRegister() {
+            async handleRegister() {
+                this.showLoading = true;
+
                 this.inputData.age = this.getAge;
                 try {
-                    this.register(this.inputData);
+                    await this.register(this.inputData);
+
                     this.$router.push("/login");
                 }
                 catch (error) {
                     alert("Error! " + error);
                 }
+
+                this.showLoading = false;
             }
         }
     }
