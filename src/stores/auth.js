@@ -43,6 +43,7 @@ export const useAuthStore = defineStore('authStore', {
             this.isLoggedIn = false;
             sessionStorage.setItem('isLoggedIn', false);
             sessionStorage.removeItem('token');
+            sessionStorage.removeItem('loggedInUser');
             this.loggedInUser = null;
         },
     }

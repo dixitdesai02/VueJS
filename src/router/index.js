@@ -60,14 +60,13 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-    const isAutheticated = JSON.parse(sessionStorage.getItem('isLoggedIn'));
-    const token = sessionStorage.getItem('token');
+    const isAutheticated = JSON.parse(sessionStorage.getItem('isLoggedIn')) && sessionStorage.getItem('token');
 
-    if (to.meta.requiresAuth && !isAutheticated && !token) {
-        alert("Please login to continue..")
+    if (to.meta.requiresAuth && !isAutheticated) {
+        alert("Please login to continue..");
         next("/login");
     }
-    else if (to.meta.guest && isAutheticated && token) {
+    else if (to.meta.guest && isAutheticated) {
         next("/");
     } 
     else {
