@@ -29,17 +29,17 @@
                     <ErrorMessage class="text-red-600 text-sm" name="password"/>
                 </div>
             
-                <button type="submit" class="my-1 px-5 py-2 text-md font-bold text-center text-white bg-slate-600 rounded-lg focus:ring-4 focus:outline-none focus:ring-slate-300">Login</button>
+                <button type="submit" v-show="!showLoading" class="my-1 px-5 py-2 text-md font-bold text-center text-white bg-slate-600 rounded-lg focus:ring-4 focus:outline-none focus:ring-slate-300">Login</button>
+                <img v-show="showLoading" class="bg-slate-600 rounded-lg px-3 w-16 h-11 object-contain" src="/spinner.gif" alt="Spinner" />
+
             </Form>
         </div>
     </div>
 </template>
 
 <script>
-import { mapActions } from 'pinia';
+import { mapActions, mapState } from 'pinia';
 import { useAuthStore } from '../stores/auth';
-
-// import axios from 'axios';
 
     export default {
         name: "LoginForm",
@@ -47,29 +47,42 @@ import { useAuthStore } from '../stores/auth';
             return {
                 schema: {
                     email: "required|email",
-                    password: "required|min:8|max:12"
+                    password: "required"
                 },
                 inputData: {
                     email: "",
                     password: ""
-                }
+                },
+                showLoading: false
             }
         },
+        computed: {
+            ...mapState(useAuthStore, ['users'])
+        },
         methods: {
-            ...mapActions(useAuthStore, ['login']),
-            handleLogin() {
+            ...mapActions(useAuthStore, ['getAllUsers', 'login']),
+            async handleLogin() {
                 try {
-                    this.login(this.inputData);
-                    this.$router.push("/")
+                    this.showLoading = true;
+
+                    await this.getAllUsers();
+
+                    let matchedUser = this.users.find((user) => ( user.email === this.inputData.email && user.password === this.inputData.password ));
+
+                    if (matchedUser) {
+                        this.login(matchedUser);
+                    }
+                    else {
+                        throw new Error("Invalid Credentials!");
+                    }
+
+                    this.$router.push("/");
                 }
                 catch(error) {
-                    alert("Error! " + error);
+                    alert(error);
                 }
+                this.showLoading = false;
             }
         }
     }
 </script>
-
-<style scoped>
-
-</style>

@@ -69,8 +69,9 @@
                     </div>
     
                     <div class="mt-4 flex justify-end">
-                        <button v-if="typeOfModal === 'add'" class="px-5 py-2 text-md font-bold text-center text-white bg-slate-600 rounded-lg focus:ring-4 focus:outline-none focus:ring-slate-300">Save</button>
-                        <button v-else class="px-5 py-2 text-md font-bold text-center text-white bg-slate-600 rounded-lg focus:ring-4 focus:outline-none focus:ring-slate-300">Update</button>
+                        <button v-if="typeOfModal === 'add' && !showLoading" class="px-5 py-2 text-md font-bold text-center text-white bg-slate-600 rounded-lg focus:ring-4 focus:outline-none focus:ring-slate-300">Save</button>
+                        <button v-else-if="!showLoading" class="px-5 py-2 text-md font-bold text-center text-white bg-slate-600 rounded-lg focus:ring-4 focus:outline-none focus:ring-slate-300">Update</button>
+                        <img v-show="showLoading" class="bg-slate-600 rounded-lg px-3 w-16 object-contain" src="/spinner.gif" alt="Spinner" />
                         <button type="reset" class="bg-gray-300 text-gray-800 font-bold py-2 px-4 ml-2 rounded" @click="closeModal">Cancel</button>
                     </div>
     
@@ -99,8 +100,9 @@
                     name: "required|min:3|max:50",
                     details: "required|min:30|max:120",
                     image: "required|url",
-                    price: "required|numeric|min_value:100|max_value:10000000"
-                }
+                    price: "required|numeric|min_value:100|max_value:100000000"
+                },
+                showLoading: false
             };
         },
         computed: {
@@ -114,6 +116,7 @@
                 this.showModal = false;
             },
             async handleSubmit() {
+                this.showLoading = true;
                 if (this.typeOfModal === 'add') {
                     try {
                         await this.addCar(this.formData);
@@ -133,6 +136,7 @@
                     }
                 }
                 this.closeModal();
+                this.showLoading = false;
             },
             notify() {
                 Swal.fire({

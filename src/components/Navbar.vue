@@ -1,10 +1,10 @@
 <template>
     <header class="bg-slate-600 text-center pt-4 pb-3 sticky top-0 w-full z-40">
         <div class="w-5/6 sm:w-2/3 flex justify-between items-center m-auto">
-            <a class="cursor-pointer" href="/">
+            <RouterLink :to="{name: 'home'}" exact-active-class>
                 <h1 class="text-2xl sm:text-3xl text-slate-200 font-bold">Car Zone</h1>
                 <h3 class="text-md mt-1 text-sky-300 font-semibold">-Driving Dreams</h3>
-            </a>
+            </RouterLink>
             <div class="nav-list bg-slate-600" ref="navList">
                 <div class="hamburger-menu" ref="menu" @click="showMenu">
                     <div class="line line-1"></div>
@@ -12,16 +12,12 @@
                     <div class="line line-3"></div>
                 </div>
 
-                <div class="flex flex-col md:flex-row md:gap-6 font-semibold text-lg text-slate-200">
-                    <button class="hover:text-white hover:underline" @click="handleBtnclick">
-                        <RouterLink :to="{name: 'home'}">Home</RouterLink>
-                    </button>
-                    <button class=" hover:text-white hover:underline" @click="handleBtnclick">
-                        <RouterLink :to="{name: 'login'}">Login</RouterLink>
-                    </button>
-                    <button class=" hover:text-white hover:underline" @click="handleBtnclick">
-                        <RouterLink :to="{name: 'register'}">Register</RouterLink>
-                    </button>
+                <div class="flex flex-col items-center md:flex-row md:gap-6 font-semibold text-lg text-slate-200">
+                    <h3 v-if="isLoggedIn" class="flex items-center gap-2 cursor-pointer text-base bg-slate-500 px-4 py-1 rounded-full"><img class="w-5 object-contain" src="/user.png"/>{{ loggedInUser }}</h3>
+                    <RouterLink :to="{name: 'home'}" v-if="isLoggedIn" class="hover:text-white hover:underline" @click="handleBtnclick">Home</RouterLink>
+                    <RouterLink :to="{name: 'login'}" v-if="!isLoggedIn" class="hover:text-white hover:underline" @click="handleBtnclick">Login</RouterLink>
+                    <RouterLink :to="{name: 'register'}" v-if="!isLoggedIn" class="hover:text-white hover:underline" @click="handleBtnclick">Register</RouterLink>
+                    <RouterLink :to="{name: 'login'}" v-if="isLoggedIn" @click="handleLogout()" class="hover:text-white hover:underline">Logout</RouterLink>
                 </div>
             </div>
         </div>
@@ -29,21 +25,31 @@
 </template>
 
 <script>
+import { mapActions, mapState } from 'pinia';
+import { useAuthStore } from '../stores/auth';
 import { RouterLink } from 'vue-router'
 import ModalForm from './ModalForm.vue';
 
 export default {
     name: "Header",
-    components: {
-        ModalForm
+    computed: {
+        ...mapState(useAuthStore, ['isLoggedIn', 'loggedInUser'])
     },
     methods: {
+        ...mapActions(useAuthStore, ['logout']),
         showMenu() {
             this.$refs.navList.classList.toggle('change');
         },
         handleBtnclick() {
             this.$refs.navList.classList.toggle('change');
+        },
+        handleLogout() {
+            this.logout();
+            this.handleBtnclick();
         }
+    },
+    components: {
+        ModalForm
     }
 }
 </script>
