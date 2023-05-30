@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build:stage": "vite build --mode staging",
+    "build:prod": "vite build --mode production",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -12,7 +13,6 @@
     "axios": "^1.4.0",
     "pinia": "^2.0.36",
     "sweetalert2": "^11.7.3",
-    "tw-elements": "^1.0.0-beta2",
     "vee-validate": "^4.8.6",
     "vue": "^3.2.47",
     "vue-router": "^4.1.6"

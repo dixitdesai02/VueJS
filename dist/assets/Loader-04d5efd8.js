@@ -1,0 +1,1 @@
+import{_ as e,o as s,c as o,d as t}from"./index-df6e8c83.js";const c="/loader.gif",n={name:"Loader"},a={class:"w-full h-full flex justify-center align-center"},r=t("img",{src:c,alt:"Loading",class:"md:w-1/2 lg:w-1/3"},null,-1),_=[r];function l(i,d,f,p,m,u){return s(),o("section",a,_)}const h=e(n,[["render",l]]);export{h as L};
