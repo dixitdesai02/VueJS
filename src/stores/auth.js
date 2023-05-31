@@ -4,7 +4,7 @@ import { defineStore } from "pinia";
 export const useAuthStore = defineStore('authStore', {
     state: () => {
         return {
-            baseURL: "https://testapi.io/api/dartya",
+            baseURL: import.meta.env.VITE_AUTH_API_BASEURL,
             users: [],
             isLoggedIn: JSON.parse(sessionStorage.getItem('isLoggedIn')),
             loggedInUser: sessionStorage.getItem("loggedInUser")

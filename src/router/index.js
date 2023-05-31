@@ -1,16 +1,10 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-import Home from '../views/Home.vue'
-import Login from '../views/Login.vue'
-import Register from '../views/Register.vue'    
-import CarDetails from '../views/CarDetails.vue'
-import NotFound from '../views/NotFound.vue'
-
 const routes = [
     {
         path: "/",
         name: "home",
-        component: Home,
+        component: () => import('../views/Home.vue'),
         meta: {
             title: "Home | CarZone",
             requiresAuth: true
@@ -19,7 +13,7 @@ const routes = [
     {
         path: "/login",
         name: "login",
-        component: Login,
+        component: () => import('../views/Login.vue'),
         meta: {
             title: "Login | CarZone",
             guest: true
@@ -28,7 +22,7 @@ const routes = [
     {
         path: "/register",
         name: "register",
-        component: Register,
+        component: () => import('../views/Register.vue'),
         meta: {
             title: "Register | CarZone",
             guest: true
@@ -37,7 +31,7 @@ const routes = [
     {
         path: "/details/:id",
         name: "details",
-        component: CarDetails,
+        component: () => import('../views/CarDetails.vue'),
         meta: {
             title: "Car | CarZone",
             requiresAuth: true
@@ -46,7 +40,7 @@ const routes = [
     {
         path: '/:catchAll(.*)',
         name: 'notFound',
-        component: NotFound,
+        component: () => import('../views/NotFound.vue'),
         meta: {
             title: "404 | CarZone"
         }

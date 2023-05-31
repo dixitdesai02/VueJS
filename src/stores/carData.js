@@ -5,7 +5,7 @@ export const useCarData = defineStore('carData', {
     state: () => {
         return {
             cars: [],
-            baseURL: "https://testapi.io/api/dartya/resource/cardata"
+            baseURL: import.meta.env.VITE_CARS_API_BASEURL
         }
     },
 
