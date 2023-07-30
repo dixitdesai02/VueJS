@@ -1,11 +1,11 @@
 <template>
-    <div class="wrapper max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+    <div class="wrapper max-w-sm bg-white border border-gray-200 rounded-lg shadow">
         <div class="overflow-hidden cursor-pointer bg-slate-100">
             <img class="car-img rounded-t-lg bg-slate-50" :src="car.image" alt="" />
         </div>
         <div class="p-5">
-            <h5 class="mb-2 text-xl font-semibold tracking-tight text-gray-900 dark:text-white">{{ car.name?.length > 20 ? car.name?.slice(0, 20) + "..." : car.name }}</h5>
-            <p class="mb-3 font-light text-gray-700 dark:text-gray-400 h-24 car-details"> 
+            <h5 class="mb-2 text-xl font-semibold tracking-tight text-gray-900">{{ car.name?.length > 20 ? car.name?.slice(0, 20) + "..." : car.name }}</h5>
+            <p class="mb-3 font-light text-gray-700 h-24 car-details"> 
                 {{ car.details?.length > 110 ? car.details?.slice(0, 100) + "...": car.details }}
             </p>
             <div class="flex items-center justify-between">
